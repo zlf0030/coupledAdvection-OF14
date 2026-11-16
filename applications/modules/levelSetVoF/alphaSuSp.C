@@ -1,0 +1,66 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           |
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of the levelSetVoF solver module, derived from the
+    OpenFOAM-14 incompressibleVoF module (GNU General Public License v3).
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+#include "levelSetVoF.H"
+#include "fvcDiv.H"
+
+// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+void Foam::solvers::levelSetVoF::alphaSuSp
+(
+    tmp<volScalarField::Internal>& tSu,
+    tmp<volScalarField::Internal>& tSp
+)
+{
+    if (!divergent()) return;
+
+    const dimensionedScalar Szero(dimless/dimTime, 0);
+
+    tSp = volScalarField::Internal::New("Sp", mesh, Szero);
+    tSu = volScalarField::Internal::New("Su", mesh, Szero);
+
+    volScalarField::Internal& Sp = tSp.ref();
+    volScalarField::Internal& Su = tSu.ref();
+
+    if (fvModels().addsSupToField(alpha1.name()))
+    {
+        const fvScalarMatrix alpha1Sup(fvModels().source(alpha1));
+
+        Su += alpha2()*alpha1Sup.Su();
+        Sp += alpha2()*alpha1Sup.Sp();
+    }
+
+    if (fvModels().addsSupToField(alpha2.name()))
+    {
+        const fvScalarMatrix alpha2Sup(fvModels().source(alpha2));
+
+        Su -= alpha1()*(alpha2Sup.Su() + alpha2Sup.Sp());
+        Sp += alpha1()*alpha2Sup.Sp();
+    }
+}
+
+
+// ************************************************************************* //

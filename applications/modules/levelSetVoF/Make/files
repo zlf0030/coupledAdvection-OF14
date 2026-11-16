@@ -1,0 +1,5 @@
+levelSetTwoPhaseVoFMixture.C
+alphaSuSp.C
+levelSetVoF.C
+
+LIB = $(FOAM_USER_LIBBIN)/liblevelSetVoFSolver
