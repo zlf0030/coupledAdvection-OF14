@@ -1,0 +1,21 @@
+# ---- build artifacts ----
+platforms/
+lnInclude/
+Make/linux*/
+*.dep
+
+# ---- runtime artifacts ----
+processor*/
+postProcessing/
+log.*
+[1-9]*
+0.[0-9]*
+1.[0-9]*
+
+# ---- python ----
+__pycache__/
+*.pyc
+
+# ---- editors ----
+*~
+.#*

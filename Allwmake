@@ -1,0 +1,11 @@
+#!/bin/bash
+# coupledAdvection-OF14 : build all solver modules in dependency order
+set -e
+cd "$(dirname "$0")"
+
+wmake libso src/isoAdvection
+wmake libso applications/modules/coupledAdvection
+wmake libso applications/modules/levelSetVoF
+wmake libso applications/modules/plicLevelSetVoF
+
+echo "All libraries built into $FOAM_USER_LIBBIN"
