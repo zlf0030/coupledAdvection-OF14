@@ -1,0 +1,5 @@
+SOURCE += isoAdvection.C
+SOURCE += isoCutCell.C
+SOURCE += isoCutFace.C
+
+LIB = $(FOAM_USER_LIBBIN)/libisoAdvection
