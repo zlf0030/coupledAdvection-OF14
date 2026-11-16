@@ -1,0 +1,3 @@
+SOURCE += coupledAdvection.C
+
+LIB = $(FOAM_USER_LIBBIN)/libcoupledAdvectionSolver
