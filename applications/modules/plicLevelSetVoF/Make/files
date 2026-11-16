@@ -1,0 +1,4 @@
+plicLevelSetVoF.C
+plicLevelSetTwoPhaseVoFMixture.C
+
+LIB = $(FOAM_USER_LIBBIN)/libplicLevelSetVoFSolver
