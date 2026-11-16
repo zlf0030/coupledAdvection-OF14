@@ -1,0 +1,67 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Website:  https://openfoam.org                  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solver          incompressibleVoF;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         3;
+
+deltaT          @DT@;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.01;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable no;
+
+adjustTimeStep  no;
+
+// Benchmark quantities of Hysing et al. (2009), test case 2:
+//   Vc(t) = sum(alpha.air*V*U)/sum(alpha.air*V)   (volAverage with weight)
+// written every step to postProcessing/bubbleMetrics/0/volFieldValue.dat
+functions
+{
+    bubbleMetrics
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        fields          (U);
+        cellZone        all;
+        weightField     alpha.air;
+        operation       volAverage;
+        writeFields     false;
+        log             false;
+        executeControl  timeStep;
+        writeControl    timeStep;
+    }
+}
+
+// ************************************************************************* //

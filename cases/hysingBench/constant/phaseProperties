@@ -1,0 +1,15 @@
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Phase 1 = air (the bubble): alpha.air is the transported field
+phases          (air water);
+
+sigma           1.96;
+
+// ************************************************************************* //
